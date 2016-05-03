@@ -3,8 +3,13 @@ require 'highline/import'
 require 'colorize'
 
 class Apartmenthunter::CLI
+  attr_accessor :area, :min_price, :max_price, :bedrooms, :bathrooms, :zip, :miles, :results
+
+
+
 
   def call
+
     welcome
     area
     parameters
@@ -100,9 +105,10 @@ class Apartmenthunter::CLI
 
   def results
     #dummy data to test search results
-    search_results = [{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"}]
+    #search_results = [{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"}]
+    @apt_results = Apartmenthunter::Scraper.scrape_craig(@area, @min_price, @max_price, @bedrooms, @bathrooms, @zip, @miles)
 
-    Formatador.display_table(search_results)
+    Formatador.display_table(@apt_results)
     say("\nPlease select wether you would like to export these results, restart your search, or quit : \n".green)
     loop do
       choose do |menu|
