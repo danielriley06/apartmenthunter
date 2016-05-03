@@ -2,18 +2,19 @@ require 'formatador'
 require 'highline/import'
 require 'colorize'
 
+
 class Apartmenthunter::CLI
   attr_accessor :area, :min_price, :max_price, :bedrooms, :bathrooms, :zip, :miles, :results
-
-
-
 
   def call
 
     welcome
     area
     parameters
+
     results
+    display_results
+    post_search_options
     goodbye
   end
 
@@ -83,12 +84,11 @@ class Apartmenthunter::CLI
           @area = "/wch"
           next
         end
-        menu.choice("Quit") { exit }
+        menu.choice("Exit") { exit }
       end
       break
     end
   end
-
 
   def parameters
     say("\nPlease begin by answering a few questions to narrow down your search.".red)
@@ -104,19 +104,18 @@ class Apartmenthunter::CLI
   end
 
   def results
-    #dummy data to test search results
-    #search_results = [{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"},{:name => "Highling Apartments", :url => "http://www.randomshit.com", :price => "$1,500", :location => "Millburn, NJ"}]
     @apt_results = Apartmenthunter::Scraper.scrape_craig(@area, @min_price, @max_price, @bedrooms, @bathrooms, @zip, @miles)
+  end
 
-    Formatador.display_table(@apt_results)
+  def display_results
+    Formatador.display_compact_table(@apt_results)
+  end
+
+  def post_search_options
     say("\nPlease select wether you would like to export these results, restart your search, or quit : \n".green)
     loop do
       choose do |menu|
         menu.layout = :list
-        menu.choice("Export") do |command|
-          export_search
-          goodbye
-        end
         menu.choice("Restart Search") do |command|
           area
         end

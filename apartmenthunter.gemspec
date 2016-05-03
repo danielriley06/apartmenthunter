@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["danielriley06"]
   spec.email         = ["driley3@gmail.com"]
 
-  spec.summary       = %q{Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{Write a longer description or delete this line.}
+  spec.summary       = %q{CLI based scraper to find apartments in the NYC area.}
+  spec.description   = %q{CLI based scraper to find apartments in the NYC area. Based on several parameters such as min/max price, number of bedrooms/bathrooms, etc.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
@@ -28,10 +28,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency 'formatador'
+  spec.add_dependency 'ruby-progressbar'
   spec.add_dependency 'highline'
   spec.add_dependency 'colorize'
   spec.add_dependency 'mechanize'
   spec.add_dependency 'pry'
+
 
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"

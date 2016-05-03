@@ -1,9 +1,10 @@
 require 'mechanize'
+require 'ruby-progressbar'
 require 'pry'
 
 
 class Apartmenthunter::Scraper
-  attr_accessor :area, :min_price, :max_price, :bedrooms, :bathrooms, :miles, :zip, :results
+  #attr_accessor :area, :min_price, :max_price, :bedrooms, :bathrooms, :miles, :zip, :results
 
 
 
@@ -52,7 +53,7 @@ class Apartmenthunter::Scraper
       apt_hash = {:location => "", :name => "", :price => "", :url => ""}
       link = result.css('a')[1]
       apt_hash[:name] = link.text.strip
-      apt_hash[:url] = "http://newyork.craigslist.org/" + link.attributes["href"].value
+      apt_hash[:url] = "http://newyork.craigslist.org" + link.attributes["href"].value
       apt_hash[:price] = result.search('span.price').text
       apt_hash[:location] = result.search('span.pnr').text[3..-13]
 
@@ -61,8 +62,12 @@ class Apartmenthunter::Scraper
       # Save results
       @results << apt_hash
     end
-      return @results
+    progress = ProgressBar.create(:title => "Downloading", :total => 20, :length => 40)
+    20.times do
+      sleep 0.1
+      progress.increment
+    end
 
+    return @results
   end
-
 end

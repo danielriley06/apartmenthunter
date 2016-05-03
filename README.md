@@ -10,7 +10,10 @@ $ gem install apartmenthunter
 
 ## Usage
 
-TODO: Write usage instructions here
+Type the following into your terminal:
+$ apartmenthunter
+
+The CLI will walk you through it's usage. First you must select a specific area in or around the city, or select all areas. Then enter the requested parameters to narrow down your search.
 
 ## Development
 
