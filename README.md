@@ -1,17 +1,19 @@
 # Apartment Hunter
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/apartmenthunter`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Welcome to Apartment Hunter! This gem will search Craigslist for apartments in the Greater New York area.
 
 ## Installation
 
-$ gem install apartmenthunter
+```
+$ gem install apartmenthunter'
+```
 
 ## Usage
 
 Type the following into your terminal:
+```
 $ apartmenthunter
+```
 
 The CLI will walk you through it's usage. First you must select a specific area in or around the city, or select all areas. Then enter the requested parameters to narrow down your search.
 
