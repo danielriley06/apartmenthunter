@@ -12,7 +12,7 @@ module Apartmenthunter
           csv << x.values
         end
       end
-      File.write('aptsearchresults.csv', s)
+      File.write("#{Dir.home}/Documents/aptsearchresults.csv", s)
     end
   end
 end

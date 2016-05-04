@@ -74,7 +74,7 @@ module Apartmenthunter
 
     def csv_export
       Export.output(@apt_results)
-      say("\nYour results are located in aptsearchresults.csv")
+      say("\nYour results are located in the file aptsearchresults.csv your Documents folder")
       post_search_options
     end
 
