@@ -1,5 +1,6 @@
 require 'apartmenthunter/scraper'
 require 'apartmenthunter/area'
+require 'apartmenthunter/export'
 require 'apartmenthunter'
 require 'formatador'
 require 'highline/import'
@@ -58,6 +59,9 @@ module Apartmenthunter
       loop do
         choose do |menu|
           menu.layout = :list
+          menu.choice("Export Results") do |command|
+            csv_export
+          end
           menu.choice("Restart Search") do |command|
             area
           end
@@ -66,6 +70,12 @@ module Apartmenthunter
           end
         end
       end
+    end
+
+    def csv_export
+      Export.output(@apt_results)
+      say("\nYour results are located in aptsearchresults.csv")
+      post_search_options
     end
 
     def goodbye
