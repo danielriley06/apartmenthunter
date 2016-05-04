@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 require 'bundler/setup'
-require "apartmenthunter/version"
-require "apartmenthunter/cli"
-require "apartmenthunter/scraper"
+require 'apartmenthunter/version'
+require 'apartmenthunter/cli'
+require 'apartmenthunter/scraper'
+require 'apartmenthunter'
 
-Apartmenthunter::CLI.new.call
+Apartmenthunter::Run.new.call
