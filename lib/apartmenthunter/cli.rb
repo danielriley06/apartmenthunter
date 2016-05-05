@@ -5,7 +5,7 @@ require 'apartmenthunter'
 require 'formatador'
 require 'highline/import'
 require 'colorize'
-require 'pry'
+
 
 module Apartmenthunter
   class Apartmenthunter::CLI
@@ -28,7 +28,7 @@ module Apartmenthunter
       choose do |menu|
         menu.layout = :list
         menu.prompt = "\nPlease enter your the specific area you would like to search : ".green
-        menu.choices(*@locations) {|command| command == "Exit" ? goodbye : @area = Area.set_area(command)}
+        menu.choices(*@locations) {|command| command == "Exit" ? goodbye : current_area = Area.new(command)}
         end
     end
 
@@ -36,18 +36,18 @@ module Apartmenthunter
       say("\nPlease begin by answering a few questions to narrow down your search.".red)
       @min_price = ask("What is the minimum amount of rent you would like to pay? ", lambda { |p| p.sub(/[^0-9A-Za-z]/, '')})
       @max_price = ask("What is the maximum amount of rent you would like to pay? ", lambda { |p| p.sub(/[^0-9A-Za-z]/, '')})
-      @bedrooms = ask("Please enter the number of bedrooms : ", Integer)
-      @bathrooms = ask("Please enter the number of bathrooms : ", Integer)
-      @zip = ask("Please enter the zip code you would like to center your search around : ", String) do |q|
+      @bedrooms = ask("Please enter the number of bedrooms (between 1 and 8): ", Integer) { |q| q.in = 0..8 }
+      @bathrooms = ask("Please enter the number of bathrooms (between 1 and 8): ", Integer) { |q| q.in = 0..8 }
+      @zip = ask("Please enter the 5 digit zip code you would like to center your search around : ", String) do |q|
         q.validate = /\A\d{5}(?:-?\d{4})?\Z/
         q.responses[:not_valid] = "Please enter a 5 digit zip code."
       end
-      @miles = ask("Finally, please enter the number of miles you would like to search from that zip code : ", Integer) { |q| q.in = 0..500 }
+      @miles = ask("Finally, please enter the number of miles (between 0 and 500) you would like to search from that zip code : ", Integer) { |q| q.in = 0..500 }
 
     end
 
     def results
-      @apt_results = Scraper.scrape_craig(@area, @min_price, @max_price, @bedrooms, @bathrooms, @zip, @miles)
+      @apt_results = Scraper.new(@min_price, @max_price, @bedrooms, @bathrooms, @zip, @miles).scrape_craig
     end
 
     def display_results
@@ -79,7 +79,7 @@ module Apartmenthunter
     end
 
     def goodbye
-      puts "Happy apartment hunting!"
+      puts "\nHappy apartment hunting!\n"
       exit
     end
 

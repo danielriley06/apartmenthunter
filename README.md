@@ -15,7 +15,7 @@ Type the following into your terminal:
 $ apartmenthunter
 ```
 
-The CLI will walk you through it's usage. First you must select a specific area in or around the city, or select all areas. Then enter the requested parameters to narrow down your search.
+The CLI will walk you through it's usage. First you must select a specific area in or around the city, or select all areas. Then enter the requested parameters to narrow down your search. The results will be displayed, which you will have the option to export to CSV.
 
 ## Development
 
