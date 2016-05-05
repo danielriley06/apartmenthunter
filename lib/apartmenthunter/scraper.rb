@@ -6,6 +6,7 @@ require 'apartmenthunter/area'
 
 module Apartmenthunter
   class Scraper
+    attr_accessor :results
     attr_reader :area, :min_price, :max_price, :bedrooms, :bathrooms, :zip, :miles
 
     @@all = []
@@ -18,29 +19,35 @@ module Apartmenthunter
       @bathrooms = bathrooms
       @zip = zip
       @miles = miles
+      @results = []
       @@all << self
+      self.mechanize
     end
 
-    def scrape_craig
+    def mechanize
       # Instantiate a new web scraper with Mechanize
-      scraper = Mechanize.new
+      @scraper = Mechanize.new
 
       # Mechanize setup to rate limit your scraping
       # to prevent IP ban.
-      scraper.history_added = Proc.new { sleep 0.5 }
+      @scraper.history_added = Proc.new { sleep 0.5 }
+      self.set_address
+    end
 
+    def set_address
       # Set the address for the area to be searched set by area method in CLI
       #@area = "/jsy"
       area = @area
       @address = "http://newyork.craigslist.org/search"+"#{area}"+"/aap"
+      self.scrape_craig
+    end
 
-
-      @results = []
+    def scrape_craig
       #Let us scrape.
-      page = scraper.get(@address)
+      @page = @scraper.get(@address)
 
       # Use Mechanize to enter search terms into the form fields desired. (Second form on page)
-      form = page.forms[1]
+      form = @page.forms[1]
 
         form['min_price'] = @min_price
         form['max_price'] = @max_price
@@ -49,10 +56,12 @@ module Apartmenthunter
         form['search_distance'] = @miles
         form['postal'] = @zip
 
-      result_page = form.submit
+      @result_page = form.submit
+      self.parse_results
+    end
 
-
-      raw_results = result_page.search('p.row')
+    def parse_results
+      raw_results = @result_page.search('p.row')
 
       raw_results.each do |result|
         apt_hash = {:location => "", :name => "", :price => "", :url => ""}
@@ -67,6 +76,10 @@ module Apartmenthunter
         # Save results
         @results << apt_hash
       end
+      self.progress
+    end
+
+    def progress
       progress = ProgressBar.create(:title => "Downloading", :total => 20, :length => 40)
       20.times do
         sleep 0.1

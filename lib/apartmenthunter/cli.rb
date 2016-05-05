@@ -47,7 +47,8 @@ module Apartmenthunter
     end
 
     def results
-      @apt_results = Scraper.new(@min_price, @max_price, @bedrooms, @bathrooms, @zip, @miles).scrape_craig
+      results = Scraper.new(@min_price, @max_price, @bedrooms, @bathrooms, @zip, @miles)
+      @apt_results = results.results
     end
 
     def display_results
@@ -63,7 +64,7 @@ module Apartmenthunter
             csv_export
           end
           menu.choice("Restart Search") do |command|
-            area
+            Apartmenthunter::Run.new.call
           end
           menu.choice("Exit") do |command|
             goodbye
